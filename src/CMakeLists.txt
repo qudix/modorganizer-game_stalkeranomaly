@@ -1,7 +1,17 @@
 cmake_minimum_required(VERSION 3.16)
-if(DEFINED DEPENDENCIES_DIR)
-	include(${DEPENDENCIES_DIR}/modorganizer_super/cmake_common/src.cmake)
-else()
-	include(../../cmake_common/src.cmake)
-endif()
-requires_project(game_features)
+
+add_library(game_stalkeranomaly
+    SHARED
+)
+
+mo2_configure_plugin(game_stalkeranomaly
+    WARNINGS OFF
+)
+
+mo2_install_target(game_stalkeranomaly)
+
+mo2_add_filter(
+    NAME src/features
+    GROUPS
+        features/stalkeranomaly_savegame
+)
