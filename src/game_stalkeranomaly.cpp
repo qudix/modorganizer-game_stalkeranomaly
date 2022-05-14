@@ -2,7 +2,7 @@
 
 #include "features/stalkeranomaly_savegame.h"
 
-bool AnomalyGame::init(mob::IOrganizer* a_organizer)
+bool AnomalyGame::init(MOBase::IOrganizer* a_organizer)
 {
 	m_organizer = a_organizer;
 
@@ -29,12 +29,12 @@ QString AnomalyGame::description() const
 	return tr("Adds support for the game S.T.A.L.K.E.R. Anomaly.");
 }
 
-mob::VersionInfo AnomalyGame::version() const
+MOBase::VersionInfo AnomalyGame::version() const
 {
 	return { 0, 6, 0 };
 }
 
-QList<mob::PluginSetting> AnomalyGame::settings() const
+QList<MOBase::PluginSetting> AnomalyGame::settings() const
 {
 	return {};
 }
@@ -73,7 +73,7 @@ int32_t AnomalyGame::nexusGameID() const
 QIcon AnomalyGame::gameIcon() const
 {
 	auto path = gameDirectory().absoluteFilePath(binaryName());
-	return mob::iconForExecutable(path);
+	return MOBase::iconForExecutable(path);
 }
 
 QDir AnomalyGame::gameDirectory() const
@@ -106,7 +106,7 @@ QString AnomalyGame::getSupportURL() const
 	return "https://www.stalker-anomaly.com/";
 }
 
-QList<mob::ExecutableInfo> AnomalyGame::executables() const
+QList<MOBase::ExecutableInfo> AnomalyGame::executables() const
 {
 	return {
 		{ "Anomaly Launcher", from_rel("AnomalyLauncher.exe") },
@@ -155,9 +155,9 @@ QString AnomalyGame::identify_path() const
 
 QString AnomalyGame::identify_version(QString a_binaryPath) const
 {
-	auto version = mob::getFileVersion(a_binaryPath);
+	auto version = MOBase::getFileVersion(a_binaryPath);
 	if (version.startsWith(FALLBACK_VERSION)) {
-		auto pversion = mob::getProductVersion(a_binaryPath);
+		auto pversion = MOBase::getProductVersion(a_binaryPath);
 		if (!pversion.isEmpty()) {
 			return pversion;
 		}

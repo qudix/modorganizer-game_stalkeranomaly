@@ -9,11 +9,3 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
-
-#include "utility.h"
-#include "iplugingame.h"
-
-namespace mob
-{
-	using namespace MOBase;
-}

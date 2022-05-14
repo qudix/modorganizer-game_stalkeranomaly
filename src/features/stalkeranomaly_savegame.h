@@ -1,9 +1,11 @@
 #pragma once
 
+#include <isavegame.h>
+
 class AnomalyGame;
 
 class AnomalySaveGame :
-	public mob::ISaveGame
+	public MOBase::ISaveGame
 {
 public:
 	AnomalySaveGame(const QString& a_file, const AnomalyGame* a_game) :

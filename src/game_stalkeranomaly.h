@@ -1,13 +1,17 @@
 #pragma once
 
+#include <iplugingame.h>
+#include <utility.h>
+
 class AnomalyGame :
-	public mob::IPluginGame
+	public MOBase::IPluginGame
 {
-	Q_OBJECT;
-	Q_PLUGIN_METADATA(IID "com.qudix.game_stalkeranomaly" FILE "game_stalkeranomaly.json");
+	Q_OBJECT
+	Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame)
+	Q_PLUGIN_METADATA(IID "com.qudix.game_stalkeranomaly" FILE "game_stalkeranomaly.json")
 
 	using FeatureMap = std::map<std::type_index, std::any>;
-	using SaveGamePtr = std::shared_ptr<const mob::ISaveGame>;
+	using SaveGamePtr = std::shared_ptr<const MOBase::ISaveGame>;
 	using SaveGameVec = std::vector<SaveGamePtr>;
 
 	static constexpr auto FALLBACK_VERSION = "1.0.0";
@@ -16,14 +20,14 @@ public:
 	AnomalyGame() = default;
 
 public: // IPLugin
-	bool init(mob::IOrganizer* a_organizer) override;
+	bool init(MOBase::IOrganizer* a_organizer) override;
 
 	QString name() const override;
 	QString localizedName() const override;
 	QString author() const override;
 	QString description() const override;
-	mob::VersionInfo version() const override;
-	QList<mob::PluginSetting> settings() const override;
+	MOBase::VersionInfo version() const override;
+	QList<MOBase::PluginSetting> settings() const override;
 
 public: // IPLuginGame
 	QString binaryName() const override;
@@ -40,7 +44,7 @@ public: // IPLuginGame
 	QString getLauncherName() const override;
 	QString getSupportURL() const override;
 
-	QList<mob::ExecutableInfo> executables() const override;
+	QList<MOBase::ExecutableInfo> executables() const override;
 
 	void detectGame() override;
 	bool looksValid(QDir const& a_path) const override;
@@ -61,7 +65,7 @@ public: // IPLuginGame
 	QStringList iniFiles() const override { return {}; }
 	QStringList DLCPlugins() const override { return {}; }
 	QStringList CCPlugins() const override { return {}; }
-	QList<mob::ExecutableForcedLoadSetting> executableForcedLoads() const override { return {}; }
+	QList<MOBase::ExecutableForcedLoadSetting> executableForcedLoads() const override { return {}; }
 	LoadOrderMechanism loadOrderMechanism() const override { return LoadOrderMechanism::FileTime; }
 	SortMechanism sortMechanism() const override { return SortMechanism::NONE; }
 	int32_t nexusModOrganizerID() const override { return 0; }
@@ -87,7 +91,7 @@ private:
 	QFileInfo from_rel(QString a_binaryPath) const;
 
 private:
-	mob::IOrganizer* m_organizer;
+	MOBase::IOrganizer* m_organizer;
 
 	QString m_gamePath;
 
