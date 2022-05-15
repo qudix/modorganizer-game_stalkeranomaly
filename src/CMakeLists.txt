@@ -14,4 +14,6 @@ mo2_add_filter(
     NAME src/features
     GROUPS
         features/stalkeranomaly_savegame
+        features/stalkeranomaly_moddatachecker
+        features/stalkeranomaly_moddatacontent
 )

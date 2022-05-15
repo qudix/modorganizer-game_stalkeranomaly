@@ -9,3 +9,9 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+
+#include <set>
+
+#include <log.h>
+
+namespace logger = MOBase::log;

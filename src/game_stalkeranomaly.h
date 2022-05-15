@@ -1,13 +1,15 @@
 #pragma once
 
 #include <iplugingame.h>
+#include <ipluginfilemapper.h>
 #include <utility.h>
 
 class AnomalyGame :
-	public MOBase::IPluginGame
+	public MOBase::IPluginGame,
+	public MOBase::IPluginFileMapper
 {
 	Q_OBJECT
-	Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame)
+	Q_INTERFACES(MOBase::IPlugin MOBase::IPluginGame MOBase::IPluginFileMapper)
 	Q_PLUGIN_METADATA(IID "com.qudix.game_stalkeranomaly" FILE "game_stalkeranomaly.json")
 
 	using FeatureMap = std::map<std::type_index, std::any>;
@@ -74,7 +76,11 @@ public: // IPLuginGame
 protected: // IPluginGame
 	FeatureMap featureList() const override { return m_features; }
 
+public: // IPluginFileMapper
+	MappingType mappings() const override;
+
 private:
+	
 	template <class T>
 	void register_feature(T* a_type) {
 		auto index = std::type_index(typeid(T));

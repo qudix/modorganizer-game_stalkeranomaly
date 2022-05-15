@@ -1,10 +1,31 @@
 #include "game_stalkeranomaly.h"
 
 #include "features/stalkeranomaly_savegame.h"
+#include "features/stalkeranomaly_moddatachecker.h"
+#include "features/stalkeranomaly_moddatacontent.h"
 
 bool AnomalyGame::init(MOBase::IOrganizer* a_organizer)
 {
 	m_organizer = a_organizer;
+	m_organizer->onAboutToRun([&](const QString& a_path) -> bool {
+		auto game_dir = gameDirectory();
+		if (!game_dir.exists())
+			return false;
+
+		game_dir.mkdir("appdata");
+		QFile dbg_dir{ game_dir.absoluteFilePath("gamedata/configs/cache_dbg.ltx") };
+		if (!dbg_dir.exists()) {
+			if (dbg_dir.open(QIODevice::ReadWrite)) {
+				QTextStream stream(&dbg_dir);
+				stream << "" << Qt::endl;
+			}
+		}
+
+		return true;
+	});
+
+	register_feature<ModDataChecker>(new AnomalyModDataChecker(this));
+	register_feature<ModDataContent>(new AnomalyModDataContent(this));
 
 	return true;
 }
@@ -146,6 +167,16 @@ AnomalyGame::SaveGameVec AnomalyGame::listSaves(QDir a_folder) const
 	}
 
 	return saves;
+}
+
+MappingType AnomalyGame::mappings() const
+{
+	MappingType result;
+
+	auto appdata_path = documentsDirectory().absolutePath();
+	result.push_back({ appdata_path, appdata_path, true, true });
+
+	return result;
 }
 
 QString AnomalyGame::identify_path() const
